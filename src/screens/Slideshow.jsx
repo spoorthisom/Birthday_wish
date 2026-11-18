@@ -43,7 +43,7 @@ export default function Slideshow({ photo, index, onNext, onPrev }) {
       <motion.div drag="x" dragSnapToOrigin dragElastic={0.5} dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={(_, i) => { if (i.offset.x < -80) onNext(); else if (i.offset.x > 80) onPrev(); }}
         className={`relative z-10 bg-white p-3 md:p-4 rounded-2xl cursor-grab active:cursor-grabbing ${pop} ${
-          photo.id === 1 ? 'w-[88vw] max-w-[640px] aspect-video' : 'w-[68vw] max-w-[340px] aspect-[3/4] max-h-[52vh]'}`}
+          'w-[68vw] max-w-[340px] aspect-[3/4] max-h-[52vh]'}`}
         initial={{ y: 60, opacity: 0, scale: 0.8, rotate: tilt * 3 }} animate={{ y: 0, opacity: 1, scale: 1, rotate: tilt }}
         transition={{ type: 'spring', stiffness: 130, damping: 12 }}>
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 -rotate-3 w-20 h-7 bg-[#FF4D8D] border-2 border-ink z-10" />

@@ -14,6 +14,7 @@ const tone = (f, at, dur, type = 'sine', vol = 0.2, to) => {
   if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
   g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
   o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur);
+  return o;
 };
 const noise = (at, dur, vol = 0.15, freq = 1000, to) => {
   const c = ac(), t = c.currentTime + at, len = Math.floor(c.sampleRate * dur);
@@ -35,4 +36,23 @@ export const sfx = {
   puff: wrap(() => noise(0, 0.3, 0.14, 900, 300)),
   scratch: wrap(() => noise(0, 0.08, 0.1, 4000)),
   wish: wrap(() => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.11, 0.55, 'triangle', 0.16))),
+};
+
+// 🎂 Happy Birthday melody (synthesized, no file needed)
+const MEL = [
+  [[392, .75], [392, .25], [440, 1], [392, 1], [523, 1], [494, 2]],
+  [[392, .75], [392, .25], [440, 1], [392, 1], [587, 1], [523, 2]],
+  [[392, .75], [392, .25], [784, 1], [659, 1], [523, 1], [494, 1], [440, 2]],
+  [[698, .75], [698, .25], [659, 1], [523, 1], [587, 1], [523, 2]],
+];
+const BEAT = 0.5;
+export const BDAY_STARTS = MEL.map((_, i) => MEL.slice(0, i).flat().reduce((a, [, b]) => a + b, 0) * BEAT);
+export const BDAY_END = MEL.flat().reduce((a, [, b]) => a + b, 0) * BEAT;
+export const birthday = (delay = 0) => {
+  if (muted) return () => {};
+  try {
+    let t = delay;
+    const os = MEL.flat().map(([f, b]) => { const o = tone(f, t, b * BEAT * 0.95, 'triangle', 0.18); t += b * BEAT; return o; });
+    return () => os.forEach(o => { try { o.stop(); } catch { /* already stopped */ } });
+  } catch { return () => {}; }
 };

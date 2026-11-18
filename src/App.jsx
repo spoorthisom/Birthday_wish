@@ -34,7 +34,7 @@ export default function App() {
     [audio1.current, audio2.current].forEach((t, i) => {
       if (!t) return;
       t.muted = muted;
-      if (i + 1 === active) { t.volume = 0.6; t.play()?.catch(() => {}); }
+      if (i + 1 === active) { t.volume = current === 'finale' ? 0.15 : 0.6; t.play()?.catch(() => {}); }
       else t.pause();
     });
   }, [current, slide, muted]);

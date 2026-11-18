@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { NAME, DOB } from '../config';
+import { NAME, DOB, PORTRAIT } from '../config';
 import { Rainbow, useCountUp, chip, pop, hint, fade } from '../ui';
 
 export default function Welcome({ onNext }) {
@@ -9,6 +9,9 @@ export default function Welcome({ onNext }) {
   return (
     <motion.div className="fixed inset-0 z-40 flex items-center justify-center p-6 cursor-pointer" {...fade} transition={{ duration: 0.8 }} onClick={onNext}>
       <div className="max-w-4xl text-center flex flex-col items-center">
+        <motion.img src={PORTRAIT} alt={NAME} onError={e => { e.currentTarget.style.display = 'none'; }}
+          className={`w-32 h-32 md:w-48 md:h-48 rounded-full object-cover bg-white mb-6 ${pop}`}
+          initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 3 }} transition={{ type: 'spring', delay: 0.1 }} />
         <motion.span className={`${chip} -rotate-3`} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.2 }}>
           🎉 Wish You many more happy returns of the day 🎉
         </motion.span>
